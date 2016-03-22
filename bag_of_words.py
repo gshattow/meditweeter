@@ -10,6 +10,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.externals import joblib
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import roc_curve, auc
+from sklearn import cross_validation
 
 stop = set(stopwords.words('english'))
 
@@ -95,6 +96,9 @@ class Modelling :
 		forest = forest.fit( train_data_features, train_class )
 
 		importances = forest.feature_importances_
+		scores = cross_validation.cross_val_score(forest,
+			train_data_features, train_class, cv=5)
+		print 'Cross validation scores:', scores.mean(), '+/-', scores.std()
 
 		return forest, importances
 
